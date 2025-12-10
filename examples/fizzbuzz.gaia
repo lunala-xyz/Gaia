@@ -1,0 +1,7 @@
+for (let i = 1; i <= 100; i += 1)  {
+    let out = "";
+    if (i % 3 == 0) out += "Fizz";
+    if (i % 5 == 0) out += "Buzz";
+    if (out == "") out = i;
+    print(out);
+}

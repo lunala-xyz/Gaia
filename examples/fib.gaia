@@ -1,0 +1,12 @@
+const n = 100;
+let a = 0;
+let b = 1;
+
+print("Fibbonacci sequence for " + n + " times:");
+
+for (let i = 0; i < n; i += 1)  {
+    print(a);
+    let temp = a;
+    a = b;
+    b = temp + b;
+}

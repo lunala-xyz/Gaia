@@ -1,0 +1,21 @@
+function apply2ndSentence(count): string {
+    if (count == 1) {
+        return "\nTake one down, pass it around, no more bottles of beer on the wall."
+    } else {
+        return "\nTake one down, pass it around, " + nextBottles + " bottles of beer on the wall."
+    }
+}
+
+let count: int = 99
+
+while (count > 0) {
+    let bottles = count
+    let nextBottles = count - 1
+
+    let output = bottles + " bottles of beer on the wall, " + bottles + " bottles of beer."
+
+    output += apply2ndSentence(nextBottles)
+
+    print(output)
+    count -= 1
+}
