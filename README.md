@@ -37,4 +37,4 @@ I mean eventually<br>
 ## The language spec
 
 If you really want to read that cracked up spec. I won't stop you.<br>
-You can find it [here](https://github.com/lunala-xyz/Gaia/gaia_spec.md)
+You can find it [here](https://github.com/lunala-xyz/Gaia/blob/master/gaia_spec.md)
