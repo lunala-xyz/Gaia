@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
+import me.minekid.gaia.antlr.GaiaBaseVisitor;
 import me.minekid.gaia.ast.*;
 import me.minekid.gaia.ast.expr.*;
 import me.minekid.gaia.ast.stmt.*;
 import me.minekid.gaia.ast.type.*;
 import me.minekid.gaia.antlr.GaiaParser;
-import me.minekid.gaia.antlr.GaiaBaseVisitor;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -82,9 +82,6 @@ public class AstBuilder extends GaiaBaseVisitor<AstNode> {
                 ctx::variableDecl,
                 ctx::constDecl,
                 ctx::funcDecl,
-                ctx::classDecl,
-                ctx::interfaceDecl,
-                ctx::callableDecl,
                 ctx::ifStmt,
                 ctx::forStmt,
                 ctx::whileStmt,
@@ -161,73 +158,6 @@ public class AstBuilder extends GaiaBaseVisitor<AstNode> {
         TypeExpression type = ctx.typeExpr() != null ? (TypeExpression) visit(ctx.typeExpr()) : null;
         Expression initializer = visitExpressionNode(ctx.expression());
         ConstDeclaration decl = new ConstDeclaration(visibility, name, type, initializer);
-
-        setLocation(decl, ctx);
-
-        return decl;
-    }
-
-    @Override
-    public ClassDeclaration visitClassDecl(GaiaParser.ClassDeclContext ctx) {
-        Visibility visibility = parseVisibility(ctx.PUBLIC(), ctx.PRIVATE());
-        String name = ctx.IDENTIFIER().getText();
-        List<ClassDeclaration.ClassMember> members = new ArrayList<>();
-
-        for (GaiaParser.ClassMemberContext memberCtx : ctx.classMember()) {
-            if (memberCtx.funcDecl() != null) {
-                members.add((FunctionDeclaration) visit(memberCtx.funcDecl()));
-            } else if (memberCtx.variableDecl() != null) {
-                members.add((VariableDeclaration) visit(memberCtx.variableDecl()));
-            } else if (memberCtx.constDecl() != null) {
-                members.add((ConstDeclaration) visit(memberCtx.constDecl()));
-            }
-        }
-
-        ClassDeclaration decl = new ClassDeclaration(visibility, name, members);
-
-        setLocation(decl, ctx);
-
-        return decl;
-    }
-
-    @Override
-    public InterfaceDeclaration visitInterfaceDecl(GaiaParser.InterfaceDeclContext ctx) {
-        Visibility visibility = parseVisibility(ctx.PUBLIC(), ctx.PRIVATE());
-        String name = ctx.IDENTIFIER().getText();
-        List<InterfaceDeclaration.InterfaceMember> members = new ArrayList<>();
-
-        for (GaiaParser.InterfaceMemberContext memberCtx : ctx.interfaceMember()) {
-            TypeExpression type = memberCtx.typeExpr().isEmpty() ? null : (TypeExpression) visit(memberCtx.typeExpr(0));
-            String memberName = memberCtx.IDENTIFIER().getText();
-            List<Parameter> params = null;
-            TypeExpression returnType = null;
-
-            if (memberCtx.LPAREN() != null) {
-                params = memberCtx.paramList() != null ? visitParameterList(memberCtx.paramList()) : new ArrayList<>();
-                returnType = memberCtx.typeExpr().size() > 1 ? (TypeExpression) visit(memberCtx.typeExpr(1)) : type;
-
-                if (memberCtx.typeExpr().size() == 1) {
-                    type = null;
-                    returnType = (TypeExpression) visit(memberCtx.typeExpr(0));
-                }
-            }
-
-            members.add(new InterfaceDeclaration.InterfaceMember(type, memberName, params, returnType));
-        }
-
-        InterfaceDeclaration decl = new InterfaceDeclaration(visibility, name, members);
-        setLocation(decl, ctx);
-
-        return decl;
-    }
-
-    @Override
-    public CallableDeclaration visitCallableDecl(GaiaParser.CallableDeclContext ctx) {
-        Visibility visibility = parseVisibility(ctx.PUBLIC(), ctx.PRIVATE());
-        String name = ctx.IDENTIFIER().getText();
-        List<Parameter> params = ctx.paramList() != null ? visitParameterList(ctx.paramList()) : new ArrayList<>();
-        TypeExpression returnType = ctx.typeExpr() != null ? (TypeExpression) visit(ctx.typeExpr()) : null;
-        CallableDeclaration decl = new CallableDeclaration(visibility, name, params, returnType);
 
         setLocation(decl, ctx);
 

@@ -1,4 +1,4 @@
-// Generated from C:/Users/maxim/OneDrive/coding/Java/Gaia/Gaia.g4 by ANTLR 4.13.2
+package me.minekid.gaia.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
