@@ -21,6 +21,8 @@ public class GaiaInterpreter {
     private static final int MAX_STACK_SIZE = 65536;
     private static final int MAX_CALL_DEPTH = 1024;
 
+    private int fuel = -1;
+
     public GaiaInterpreter(Bytecode bytecode) {
         this.bytecode = bytecode;
         this.globals = new HashMap<>();
@@ -61,12 +63,23 @@ public class GaiaInterpreter {
         return run();
     }
 
+    public void resume() {
+        halted = false;
+        run();
+    }
+
     private GaiaValue run() {
         while (!callStack.isEmpty() && !halted) {
             if(!valueStack.isEmpty() && peek().isError()) {
                 halted = true;
                 logger.error("Error: {}", peek().toGaiaString());
                 return pop();
+            }
+
+            if(fuel > 0) fuel--;
+            if(fuel == 0) {
+                halted = true;
+                return GaiaNull.INSTANCE;
             }
 
             CallFrame frame = callStack.getLast();
@@ -591,6 +604,10 @@ public class GaiaInterpreter {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public void setFuel(int fuel) {
+        this.fuel = fuel;
     }
 
     private static class CallFrame {

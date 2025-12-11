@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
 public class ExamplesTest {
-
     boolean executeFile(String path) {
         try {
             Path file = Path.of(path);

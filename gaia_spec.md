@@ -103,51 +103,6 @@ for (let var = start; var < end; var = var + step) {
 }
 ```
 
-## Classes
-
-```
-(private || public)? class ClassName {
-    type property1
-    type property2
-
-    constructor(type param1, type param2) {
-        this.property1 = param1
-        this.property2 = param2
-    }
-
-    func type methodName(type param1) {
-        // method body
-        return value
-    }
-}
-
-let myInstance = ClassName(arg1, arg2) // new is overrated anyway
-```
-
-Interfaces can be used in class declarations to enforce structure.
-
-```
-(private || public)? interface InterfaceName {
-    type property1
-    type property2
-
-    func type methodName(type param1)
-}
-```
-
-Callables are used to represent functions that can be passed around as first-class citizens.
-
-```
-(private || public)? callable InterfaceName (type property1, type property2)
-```
-
-```
-let myArray = new Array(2, 4, 6)
-myArray.forEach((number value) > {
-    print(value)
-})
-```
-
 ## Exceptions
 
 Yea I dunno. Errors are always a controversial topic.

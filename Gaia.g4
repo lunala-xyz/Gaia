@@ -18,9 +18,6 @@ FAIL : 'fail';
 PRIVATE : 'private';
 PUBLIC : 'public';
 AS : 'as';
-CLASS : 'class';
-INTERFACE : 'interface';
-CALLABLE : 'callable';
 NEW : 'new';
 GROUP : 'group';
 ONEOF : 'oneOf';
@@ -118,9 +115,6 @@ statement
 	| variableDecl
 	| constDecl
 	| funcDecl
-	| classDecl
-	| interfaceDecl
-	| callableDecl
 	| ifStmt
 	| forStmt
 	| whileStmt
@@ -161,32 +155,6 @@ paramList
 
 param
 	: (typeExpr)? IDENTIFIER
-	;
-
-// Classes (basic)
-classDecl
-	: (PUBLIC | PRIVATE)? CLASS IDENTIFIER LBRACE classMember* RBRACE
-	;
-
-classMember
-	: funcDecl
-	| variableDecl
-	| constDecl
-	| SEMI
-	;
-
-// Interfaces (basic)
-interfaceDecl
-	: (PUBLIC | PRIVATE)? INTERFACE IDENTIFIER LBRACE interfaceMember* RBRACE
-	;
-
-interfaceMember
-	: (typeExpr)? IDENTIFIER (LPAREN paramList? RPAREN (COLON typeExpr)?)? SEMI?
-	;
-
-// Callables (first-class function type declarations)
-callableDecl
-	: (PUBLIC | PRIVATE)? CALLABLE IDENTIFIER LPAREN paramList? RPAREN (COLON typeExpr)? SEMI?
 	;
 
 // Control flow
